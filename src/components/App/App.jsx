@@ -96,3 +96,11 @@ class App extends Component {
 }
 
 export default App;
+
+//TODO
+/*
+styles
+prop types
+error - component
+loader component
+*/
