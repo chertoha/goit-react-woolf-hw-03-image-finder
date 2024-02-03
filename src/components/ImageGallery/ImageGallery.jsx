@@ -9,7 +9,7 @@ const ImageGallery = ({ images }) => {
   return (
     <Gallery className="gallery">
       {images.map(image => (
-        <GalleryItem key={image.webformatURL} className="ImageGalleryItem">
+        <GalleryItem key={image.webformatURL}>
           <ImageGalleryItem {...image} />
         </GalleryItem>
       ))}

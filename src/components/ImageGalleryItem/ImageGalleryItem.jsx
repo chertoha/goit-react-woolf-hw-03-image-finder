@@ -22,12 +22,7 @@ class ImageGalleryItem extends Component {
 
     return (
       <>
-        <Image
-          className="ImageGalleryItem-image"
-          src={webformatURL}
-          alt={tags}
-          onClick={this.openModal}
-        />
+        <Image src={webformatURL} alt={tags} onClick={this.openModal} />
 
         {isModalOpen && (
           <Modal
