@@ -15,8 +15,6 @@ const api = axios.create({
 });
 
 export const getImages = async (query, page = 1) => {
-  // console.log(`query = ${query}, page = ${page}`);
-
   const response = await api.get('/', {
     params: {
       q: query,

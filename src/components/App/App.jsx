@@ -1,7 +1,10 @@
+import ErrorComponent from 'components/ErrorComponent';
 import ImageGallery from 'components/ImageGallery';
 import LoadMoreButton from 'components/LoadMoreButton';
+import Loader from 'components/Loader';
 import SearchBar from 'components/SearchBar';
 import { getImages } from 'services/api';
+import { AppWrapper } from './App.styled';
 
 const { Component } = require('react');
 
@@ -15,7 +18,7 @@ class App extends Component {
   };
 
   autoScroll = () => {
-    const gallery = document.querySelector('.ImageGallery');
+    const gallery = document.querySelector('.gallery');
 
     if (gallery) {
       const { height: cardHeight } =
@@ -34,7 +37,7 @@ class App extends Component {
     const { value } = e.target.elements.searchImage;
 
     if (value === '') {
-      this.setState({ error: 'Empty query error' });
+      this.setState({ error: 'Empty query' });
       return;
     }
 
@@ -80,27 +83,17 @@ class App extends Component {
   render() {
     const { isLoading, error, images } = this.state;
 
-    // console.log(images);
-
     return (
-      <div className="App">
+      <AppWrapper>
         <SearchBar onSubmit={this.onSubmitSearch} />
-        {error && <div>Error!!!! {error}</div>}
-        {isLoading && <div>Loading...</div>}
+        {error && <ErrorComponent message={`Error occured! ${error}`} />}
+        {isLoading && <Loader />}
         {!error && <ImageGallery images={images} />}
 
         {images.length > 0 && <LoadMoreButton onClick={this.onLoadMoreClick} />}
-      </div>
+      </AppWrapper>
     );
   }
 }
 
 export default App;
-
-//TODO
-/*
-styles
-prop types
-error - component
-loader component
-*/

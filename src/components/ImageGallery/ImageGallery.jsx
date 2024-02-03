@@ -1,17 +1,30 @@
+import PropTypes from 'prop-types';
+
 import ImageGalleryItem from 'components/ImageGalleryItem';
+import { Gallery, GalleryItem } from './ImageGallery.styled';
 
 const ImageGallery = ({ images }) => {
   if (images.length === 0) return <div>There are not any image here</div>;
 
   return (
-    <ul className="ImageGallery">
+    <Gallery className="gallery">
       {images.map(image => (
-        <li key={image.webformatURL} className="ImageGalleryItem">
+        <GalleryItem key={image.webformatURL} className="ImageGalleryItem">
           <ImageGalleryItem {...image} />
-        </li>
+        </GalleryItem>
       ))}
-    </ul>
+    </Gallery>
   );
 };
 
 export default ImageGallery;
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

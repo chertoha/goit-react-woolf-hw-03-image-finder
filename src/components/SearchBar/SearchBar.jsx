@@ -1,24 +1,29 @@
+import PropTypes from 'prop-types';
 import { IoMdSearch } from 'react-icons/io';
+import { Form, Header, Input, SubmitButton } from './SearchBar.styled';
 
 const SearchBar = ({ onSubmit }) => {
   return (
-    <header className="Searchbar">
-      <form className="SearchForm" onSubmit={onSubmit}>
-        <button type="submit" className="SearchForm-button">
+    <Header>
+      <Form onSubmit={onSubmit}>
+        <SubmitButton type="submit">
           <IoMdSearch size={24} />
-        </button>
+        </SubmitButton>
 
-        <input
-          className="SearchForm-input"
+        <Input
           type="text"
           name="searchImage"
           autoFocus
           // autoComplete="off"
           placeholder="Search images and photos"
         />
-      </form>
-    </header>
+      </Form>
+    </Header>
   );
 };
 
 export default SearchBar;
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
