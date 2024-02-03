@@ -15,6 +15,7 @@ class App extends Component {
     error: null,
     isLoading: false,
     images: [],
+    totalImages: 0,
   };
 
   autoScroll = () => {
@@ -67,9 +68,10 @@ class App extends Component {
     this.setState({ isLoading: true, error: null });
 
     getImages(this.state.search, this.state.page)
-      .then(({ hits: fetchedImages }) => {
+      .then(({ hits: fetchedImages, totalHits }) => {
         this.setState(({ images }) => ({
           images: [...images, ...fetchedImages],
+          totalImages: totalHits,
         }));
       })
       .catch(err => {
@@ -81,7 +83,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoading, error, images } = this.state;
+    const { isLoading, error, images, totalImages } = this.state;
 
     return (
       <AppWrapper>
@@ -90,7 +92,9 @@ class App extends Component {
         {isLoading && <Loader />}
         {!error && <ImageGallery images={images} />}
 
-        {images.length > 0 && <LoadMoreButton onClick={this.onLoadMoreClick} />}
+        {images.length > 0 && totalImages !== images.length && (
+          <LoadMoreButton onClick={this.onLoadMoreClick} />
+        )}
       </AppWrapper>
     );
   }
