@@ -32,31 +32,23 @@ class App extends Component {
     }
   };
 
-  onSubmitSearch = e => {
-    e.preventDefault();
+  setError = message => {
+    this.setState({ error: message });
+  };
 
-    const { value } = e.target.elements.searchImage;
-
-    if (value === '') {
-      this.setState({ error: 'Empty query' });
-      return;
-    }
-
-    this.setState(prevState => ({
-      ...prevState,
-      search: value.trim(),
+  onSubmitSearch = value => {
+    this.setState({
+      search: value,
       images: [],
       page: 1,
-    }));
-
-    e.target.reset();
+    });
   };
 
   onLoadMoreClick = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState) {
     this.autoScroll();
 
     if (
@@ -87,7 +79,7 @@ class App extends Component {
 
     return (
       <AppWrapper>
-        <SearchBar onSubmit={this.onSubmitSearch} />
+        <SearchBar setError={this.setError} setValue={this.onSubmitSearch} />
         {error && <ErrorComponent message={`Error occured! ${error}`} />}
         {isLoading && <Loader />}
         {!error && <ImageGallery images={images} />}
