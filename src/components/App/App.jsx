@@ -3,10 +3,9 @@ import ImageGallery from 'components/ImageGallery';
 import LoadMoreButton from 'components/LoadMoreButton';
 import Loader from 'components/Loader';
 import SearchBar from 'components/SearchBar';
-import { getImages } from 'services/api';
+import { PER_PAGE, getImages } from 'services/api';
 import { AppWrapper } from './App.styled';
-
-const { Component } = require('react');
+import { Component } from 'react';
 
 class App extends Component {
   state = {
@@ -15,7 +14,7 @@ class App extends Component {
     error: null,
     isLoading: false,
     images: [],
-    totalImages: 0,
+    isLoadMoreShown: false,
   };
 
   autoScroll = () => {
@@ -33,7 +32,7 @@ class App extends Component {
   };
 
   setError = message => {
-    this.setState({ error: message });
+    this.setState({ error: message, isLoadMoreShown: false });
   };
 
   onSubmitSearch = value => {
@@ -57,17 +56,17 @@ class App extends Component {
     )
       return;
 
-    this.setState({ isLoading: true, error: null });
+    this.setState({ isLoading: true, error: null, isLoadMoreShown: true });
 
     getImages(this.state.search, this.state.page)
       .then(({ hits: fetchedImages, totalHits }) => {
         this.setState(({ images }) => ({
           images: [...images, ...fetchedImages],
-          totalImages: totalHits,
+          isLoadMoreShown: this.state.page < Math.ceil(totalHits / PER_PAGE),
         }));
       })
       .catch(err => {
-        this.setState({ error: err.message });
+        this.setState({ error: err.message, isLoadMoreShown: false });
       })
       .finally(() => {
         this.setState({ isLoading: false });
@@ -75,7 +74,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoading, error, images, totalImages } = this.state;
+    const { isLoading, error, images, isLoadMoreShown } = this.state;
 
     return (
       <AppWrapper>
@@ -84,7 +83,7 @@ class App extends Component {
         {isLoading && <Loader />}
         {!error && <ImageGallery images={images} />}
 
-        {images.length > 0 && totalImages !== images.length && (
+        {!isLoading && isLoadMoreShown && (
           <LoadMoreButton onClick={this.onLoadMoreClick} />
         )}
       </AppWrapper>
